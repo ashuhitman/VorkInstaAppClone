@@ -5,10 +5,10 @@ import 'package:vorkinsta/values/app_strings.dart';
 
 class BaseAppbar extends StatelessWidget implements PreferredSizeWidget {
   final AppBar appBar;
-  final List<Widget> widgets;
+  final List<Widget>? widgets;
   final IconData? iconData;
 
-  BaseAppbar({required this.appBar, required this.widgets, this.iconData});
+  BaseAppbar({required this.appBar, this.widgets, this.iconData});
   @override
   Widget build(BuildContext context) {
     return AppBar(

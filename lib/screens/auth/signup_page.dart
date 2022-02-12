@@ -12,22 +12,6 @@ class SignupPage extends StatelessWidget {
     return Scaffold(
       appBar: BaseAppbar(
         appBar: AppBar(),
-        widgets: [
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const LoginPage()));
-              },
-              child: const Text(
-                AppStrings.loginText,
-                style: TextStyle(color: Colors.white, fontSize: 12),
-              ),
-            ),
-          )
-        ],
       ),
       body: Container(),
     );

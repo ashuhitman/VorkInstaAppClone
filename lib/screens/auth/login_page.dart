@@ -2,37 +2,40 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:vorkinsta/api/google_signin_api.dart';
 import 'package:vorkinsta/screens/auth/signup_page.dart';
+import 'package:vorkinsta/screens/main_page.dart';
 import 'package:vorkinsta/values/app_colors.dart';
 import 'package:vorkinsta/values/app_strings.dart';
 import 'package:vorkinsta/widget/base_appbar.dart';
 import 'package:vorkinsta/widget/rounded_btn.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  GoogleSignInAccount? _currentUser;
+  final GoogleSignIn _googleSignIn = GoogleSignInApi.googleSignIn;
+
+  @override
+  void initState() {
+    super.initState();
+    // listen to auth state changes
+    _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount? account) {
+      setState(() {
+        _currentUser = account;
+      });
+    });
+    _googleSignIn.signInSilently();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: BaseAppbar(
         appBar: AppBar(),
-        widgets: [
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const SignupPage()));
-              },
-              child: const Text(
-                AppStrings.signupText,
-                style: TextStyle(color: Colors.white, fontSize: 12),
-              ),
-            ),
-          )
-        ],
       ),
       body: Column(
         children: [
@@ -63,7 +66,8 @@ class LoginPage extends StatelessWidget {
           ),
           InkWell(
             onTap: () async {
-              // await signIn();
+              print("signing in...");
+              await signIn();
             },
             child: Ink(
               color: Colors.white,
@@ -174,7 +178,24 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-  Future signIn() async {
-    await GoogleSignInApi.login();
+  signIn() async {
+    print("logging...");
+    try {
+      GoogleSignInAccount? currentUser = await GoogleSignInApi.login();
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => MainPage(
+                    currentUser: currentUser,
+                  )));
+      print(_currentUser);
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 }

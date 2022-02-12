@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vorkinsta/api/google_signin_api.dart';
 import 'package:vorkinsta/screens/auth/login_page.dart';
 import 'package:vorkinsta/screens/auth/signup_page.dart';
 import 'package:vorkinsta/values/app_colors.dart';
@@ -15,7 +16,7 @@ class RoundedBtn extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialButton(
       color: AppColors.blue,
-      onPressed: () {
+      onPressed: () async {
         if (mode == 0) {
           return;
         }
